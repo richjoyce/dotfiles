@@ -2,9 +2,9 @@
     # email, private things
     path = ~/.gitconfig.local
 [user]
-	name = Richard Joyce
+    name = Richard Joyce
 [push]
-	default = simple
+    default = simple
 [core]
     editor = vim
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
