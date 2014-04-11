@@ -5,21 +5,32 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-# User specific aliases and functions
-
-PATH=$PATH:$HOME/.local/bin:$HOME/bin
-
-export USERDATA=~/git/userdata
+export PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export EDITOR=vim
 
-alias tma='tmux attach -d -t'
-alias git-tmux='tmux new -s $(basename $(pwd))'
+export USERDATA=~/git/userdata
 
-if [ -f ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh ]; then
-    source ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
+# User specific aliases and functions
+alias tma='tmux attach -d -t'
+
+# Powerline
+POWERLINE_REPO=~/.local/lib/python2.7/site-packages
+if [ -f ${POWERLINE_REPO}/powerline/bindings/bash/powerline.sh ]; then
+    source ${POWERLINE_REPO}/powerline/bindings/bash/powerline.sh
+else
+    echo "No powerline install found!"
 fi
 
-export PATH
+# Homeshick
+HOMESHICK_REPO=~/.homesick/repos/homeshick
+if [ -d ${HOMESHICK_REPO} ]; then
+    source ${HOMESHICK_REPO}/homeshick.sh
+    source ${HOMESHICK_REPO}/completions/homeshick-completion.bash
+else
+    echo "No homeshick install found!"
+fi
 
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+# Host specific settings
+if [ -f ~/.bashrc.local ]; then
+    source ~/.bashrc.local
+fi
