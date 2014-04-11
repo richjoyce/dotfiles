@@ -14,11 +14,15 @@ export USERDATA=~/git/userdata
 alias tma='tmux attach -d -t'
 
 # Powerline
-POWERLINE_REPO=~/.local/lib/python2.7/site-packages
-if [ -f ${POWERLINE_REPO}/powerline/bindings/bash/powerline.sh ]; then
-    source ${POWERLINE_REPO}/powerline/bindings/bash/powerline.sh
+POWERLINE_REPO=~/.local/lib/python2.7/site-packages/powerline
+if [ -d $POWERLINE_REPO ]; then
+    POWERLINE_REPO=~/.local/lib/python2.6/site-packages/powerline
+fi
+if [ $TERM == "xterm-256color" ] && [ -f ${POWERLINE_REPO}/bindings/bash/powerline.sh ]; then
+    source ${POWERLINE_REPO}/bindings/bash/powerline.sh
 else
     echo "No powerline install found!"
+    echo "Run: pip install --user git+git://github.com/Lokaltog/powerline"
 fi
 
 # Homeshick
