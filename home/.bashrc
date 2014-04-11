@@ -16,7 +16,7 @@ alias tma='tmux attach -d -t'
 if [ $TERM == "xterm-256color" ]; then
     # Powerline
     POWERLINE_REPO=~/.local/lib/python2.7/site-packages/powerline
-    if [ -d $POWERLINE_REPO ]; then
+    if [ ! -d $POWERLINE_REPO ]; then
         POWERLINE_REPO=~/.local/lib/python2.6/site-packages/powerline
     fi
     if [ -f ${POWERLINE_REPO}/bindings/bash/powerline.sh ]; then
