@@ -15,9 +15,11 @@ alias tma='tmux attach -d -t'
 
 if [ $TERM == "xterm-256color" ]; then
     # Powerline
-    POWERLINE_REPO=~/.local/lib/python2.7/site-packages/powerline
-    if [ ! -d $POWERLINE_REPO ]; then
-        POWERLINE_REPO=~/.local/lib/python2.6/site-packages/powerline
+    PYTHON_VERSION=$(python -V 2>&1 | cut -b8-10)
+    POWERLINE_REPO=~/.local/lib/python${PYTHON_VERSION}/site-packages/powerline
+    if [ `uname` == "Darwin" ]; then
+        POWERLINE_REPO=~/Library/Python/${PYTHON_VERSION}/lib/python/site-packages/powerline
+        export PATH=$PATH:$HOME/Library/Python/${PYTHON_VERSION}/bin
     fi
     if [ -f ${POWERLINE_REPO}/bindings/bash/powerline.sh ]; then
         source ${POWERLINE_REPO}/bindings/bash/powerline.sh
