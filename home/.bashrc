@@ -5,6 +5,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+# Vim edit mode
+set -o vi
+
 # Completion scripts
 source ~/.bash_completion-git
 
