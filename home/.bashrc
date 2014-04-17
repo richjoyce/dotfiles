@@ -5,14 +5,18 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+# Completion scripts
+source ~/.bash_completion-git
+
+# Environment variables
 export PATH=$PATH:$HOME/.local/bin:$HOME/bin
 export EDITOR=vim
-
 export USERDATA=~/git/userdata
 
 # User specific aliases and functions
 alias tma='tmux attach -d -t'
 
+# Graphical terminal
 if [ $TERM == "xterm-256color" ]; then
     # Powerline
     PYTHON_VERSION=$(python -V 2>&1 | cut -b8-10)
@@ -36,6 +40,12 @@ if [ -d ${HOMESHICK_REPO} ]; then
     source ${HOMESHICK_REPO}/completions/homeshick-completion.bash
 else
     echo "No homeshick install found!"
+fi
+
+# Mac OS X isms
+if [ `uname` == "Darwin" ]; then
+    alias ls="ls -G"
+    export PATH=/usr/local/bin:$PATH
 fi
 
 # Host specific settings
