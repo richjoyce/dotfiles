@@ -30,6 +30,7 @@ if [ $TERM == "xterm-256color" ]; then
     fi
     if [ -f ${POWERLINE_REPO}/bindings/bash/powerline.sh ]; then
         source ${POWERLINE_REPO}/bindings/bash/powerline.sh
+        export POWERLINE_REPO
     else
         echo "No powerline install found!"
         echo "Run: pip install --user git+git://github.com/Lokaltog/powerline"
