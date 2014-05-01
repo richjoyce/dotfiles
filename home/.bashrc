@@ -20,7 +20,7 @@ export USERDATA=~/git/userdata
 alias tma='tmux attach -d -t'
 
 # Graphical terminal
-if [ $TERM == "xterm-256color" ]; then
+if [ $TERM == "xterm-256color" ]||[ $TERM == "screen-256color" ] ; then
     # Powerline
     PYTHON_VERSION=$(python -V 2>&1 | cut -b8-10)
     POWERLINE_REPO=~/.local/lib/python${PYTHON_VERSION}/site-packages/powerline
