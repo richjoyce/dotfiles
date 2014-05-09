@@ -1,3 +1,12 @@
 [submodule "home/.vim/bundle/fugitive"]
 	path = home/.vim/bundle/fugitive
 	url = git://github.com/tpope/vim-fugitive.git
+[submodule "home/.vim/bundle/vim-latex"]
+	path = home/.vim/bundle/vim-latex
+	url = git://git.code.sf.net/p/vim-latex/vim-latex
+[submodule "home/.vim/bundle/vim-markdown"]
+	path = home/.vim/bundle/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git
+[submodule "home/.vim/bundle/vim-preview"]
+	path = home/.vim/bundle/vim-preview
+	url = https://github.com/greyblake/vim-preview
