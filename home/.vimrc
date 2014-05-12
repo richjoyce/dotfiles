@@ -9,3 +9,5 @@ filetype plugin indent on
 
 set rtp+=$POWERLINE_REPO/bindings/vim/
 set laststatus=2
+
+let g:Tex_DefaultTargetFormat='pdf'
