@@ -19,3 +19,6 @@
 [submodule "home/.vim/bundle/vim-cmake"]
 	path = home/.vim/bundle/vim-cmake
 	url = https://github.com/vhdirk/vim-cmake
+[submodule "home/.vim/bundle/vim-cmake-project"]
+	path = home/.vim/bundle/vim-cmake-project
+	url = https://github.com/Ignotus/vim-cmake-project
