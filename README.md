@@ -12,7 +12,8 @@ Deploying YCM to a new computer:
 homeshick cd dotfiles
 cd home/.vim/bundle/YouCompleteMe/
 git submodule update --init --recursive
-cp -r third_party/* ~/.vim/bundle/third_party/
+mv -r third_party/* ~/.vim/bundle/third_party/
+git reset --hard HEAD
 cd ~/.vim/bundle/YouCompleteMe/
 ./install.sh
 ```
