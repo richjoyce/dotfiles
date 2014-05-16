@@ -16,3 +16,6 @@ set splitright
 set splitbelow
 
 nnoremap <leader>E :vsplit .<CR>7j
+
+set background=light
+colorscheme solarized
