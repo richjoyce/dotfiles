@@ -64,3 +64,14 @@ set expandtab
 
 "" Toggle tagbar
 noremap <leader>t :TagbarToggle<CR>
+
+"" Re-Source vimrc on save
+autocmd! bufwritepost .vimrc source %
+
+"" Indent blocks multiple times
+vnoremap < <gv
+vnoremap > >gv
+
+" Highlight extra whitespace as RED
+"autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+"au InsertLeave * match ExtraWhitespace /\s\+$/
