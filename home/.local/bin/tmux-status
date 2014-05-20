@@ -9,10 +9,10 @@ day_suffix() {
     esac
 }
 
+SMALL_WIDTH=80
+MEDIUM_WIDTH=150
+
 STATUS_BG=${STATUS_BG:-base2}
-STATUS_FG=${STATUS_FG:-base1}
-PANE_INACTIVE=${PANE_INACTIVE:-base2}
-PANE_ACTIVE=${PANE_ACTIVE:-red}
 STATUS_FG=${STATUS_FG:-base1}
 
 HOSTNAME_BG=${HOSTNAME_BG:-$STATUS_BG}
@@ -24,12 +24,7 @@ TIME_MSG="⏲ `date +%H:%M`"
 DATE_BG=${DATE_BG:-$STATUS_BG}
 DATE_FG=${DATE_FG:-yellow}
 DATE_MSG="☀ `date +\"%b %e\"``day_suffix`"
-WEATHER_BG=${WEATHER_BG:-$STATUS_BG}
-WEATHER_FG=${WEATHER_FG:-base0}
-WEATHER_MSG="sunny"
 
-SESSION_BG=${SESSION_BG:-$STATUS_BG}
-SESSION_FG=${SESSION_FG:-$STATUS_FG}
 WINDOW_BG=${WINDOW_BG:-$STATUS_BG}
 WINDOW_FG=${WINDOW_FG:-$STATUS_FG}
 CURR_WINDOW_BG=${CURR_WINDOW_BG:-blue}
@@ -49,8 +44,9 @@ GIT_DIRTY_FG=${GIT_DIRTY_FG:-yellow}
 GIT_CLEAN_BG=${GIT_CLEAN_BG:-$STATUS_BG}
 GIT_CLEAN_FG=${GIT_CLEAN_FG:-green}
 
-SMALL_WIDTH=80
-MEDIUM_WIDTH=150
+WEATHER_BG=${WEATHER_BG:-$STATUS_BG}
+WEATHER_FG=${WEATHER_FG:-base0}
+WEATHER_MSG="sunny"
 
 solar_to_tmux() {
     case "$1" in
@@ -108,26 +104,6 @@ build_block() {
             echo $(tmux_color $5 $4 $7)" $6 "$(tmux_color $4 $3 "nobold,nounderscore,noitalics")""
         fi
     fi
-}
-
-build_block_right() {
-    #$1=prevbg, $2=newbg, $3=fg, $4=text
-    if [ "$1" = "$2" ]; then
-        echo $(tmux_color $3 $2)" $4 "
-    else
-        echo $(tmux_color $2 $1)""$(tmux_color $3 $2)" $4 "
-    fi
-    return 0;
-}
-
-build_block_left() {
-    #$1=nextbg, $2=newbg, $3=fg, $4=text
-    if [ "$1" = "$2" ]; then
-        echo $(tmux_color $3 $2)" $4 "
-    else
-        echo $(tmux_color $3 $2)" $4 "$(tmux_color $2 $1)""
-    fi
-    return 0;
 }
 
 setup_battery() {
@@ -230,9 +206,7 @@ add_blocks() {
     # handle special setups
     for block in $@; do
         if [ "$block" = "BATTERY" ]; then setup_battery || continue; fi
-        if [ "$block" = "GIT_LONG" ]; then setup_git || continue; fi
-        if [ "$block" = "GIT_MEDIUM" ]; then setup_git || continue; fi
-        if [ "$block" = "GIT_SHORT" ]; then setup_git || continue; fi
+        if [ "${block:0:3}" = "GIT" ]; then setup_git || continue; fi
         BLOCKS="$BLOCKS $block"
     done
     add_blocks_sub $BLOCKS
