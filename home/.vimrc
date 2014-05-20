@@ -86,6 +86,22 @@ autocmd! bufwritepost .vimrc source %
 vnoremap < <gv
 vnoremap > >gv
 
+" resize a la tmux
+nnoremap h <C-w>-
+nnoremap l <C-w>+
+nnoremap j <C-w><
+nnoremap k <C-w>>
+
+" move between tabs
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnew<CR>:Ex<CR>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+
 "" Sign column color
 highlight SignColumn ctermbg=lightgrey
 "" Add line numbers
