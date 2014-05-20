@@ -167,7 +167,7 @@ setup_git() {
         GIT_LONG_MSG=" "$(basename ${GIT_REPO})" : "${GIT_BRANCH}
         GIT_MEDIUM_MSG=" "${GIT_BRANCH}
         GIT_SHORT_MSG=""
-        if is_git_clean; then
+        if is_git_clean $GIT_REPO; then
             GIT_BG=$GIT_CLEAN_BG
             GIT_FG=$GIT_CLEAN_FG
         else
@@ -215,12 +215,15 @@ set_git_branch() {
 
 # Taken from https://github.com/jimeh/git-aware-prompt
 is_git_clean() {
-    local status=$(git status --porcelain 2> /dev/null)
-    if [[ "$status" != "" ]]; then
-        return 1
-    else
-        return 0
+    if [ -d "$1" ]; then
+        local status=$(cd $1 && git status --porcelain 2> /dev/null)
+        if [[ "$status" != "" ]]; then
+            return 1
+        else
+            return 0
+        fi
     fi
+    return 1
 }
 
 add_blocks() {
