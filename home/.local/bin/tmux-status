@@ -33,7 +33,7 @@ SESSION_FG=${SESSION_FG:-$STATUS_FG}
 WINDOW_BG=${WINDOW_BG:-$STATUS_BG}
 WINDOW_FG=${WINDOW_FG:-$STATUS_FG}
 CURR_WINDOW_BG=${CURR_WINDOW_BG:-blue}
-CURR_WINDOW_FG=${CURR_WINDOW_FG:-$STATUS_BG}
+CURR_WINDOW_FG=${CURR_WINDOW_FG:-base2}
 
 BATTERY_FULL_BG=${BATTERY_FULL_BG:-$STATUS_BG}
 BATTERY_FULL_FG=${BATTERY_FULL_FG:-green}
@@ -271,9 +271,9 @@ elif [ "$1" = "left" ]; then
     else
         add_blocks left TIME
     fi
-    echo ${STATUS}" "
+    echo ${STATUS}
 elif [ "$1" = "window" ]; then
-    echo $(set_color WINDOW "nobold,nounderscore,noitalics")" #I  #W "
+    echo $(set_color WINDOW "nobold,nounderscore,noitalics")" #I  #W "
 elif [ "$1" = "window-current" ]; then
-    echo $(set_color CURR_WINDOW invert "nobold,nounderscore,noitalics")""$(set_color CURR_WINDOW)" #I  #W "$(set_color CURR_WINDOW invert)""
+    echo $(set_color CURR_WINDOW "nobold,nounderscore,noitalics")""$(set_color CURR_WINDOW)" #I  #W "$(set_color CURR_WINDOW invert)""
 fi
