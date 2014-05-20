@@ -24,6 +24,9 @@ TIME_MSG="⏲ `date +%H:%M`"
 DATE_BG=${DATE_BG:-$STATUS_BG}
 DATE_FG=${DATE_FG:-yellow}
 DATE_MSG="☀ `date +\"%b %e\"``day_suffix`"
+SESSION_BG=${SESSION_FG:-base1}
+SESSION_FG=${SESSION_FG:-base3}
+SESSION_MSG="#S"
 
 WINDOW_BG=${WINDOW_BG:-$STATUS_BG}
 WINDOW_FG=${WINDOW_FG:-$STATUS_FG}
