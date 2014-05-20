@@ -56,3 +56,6 @@ fi
 if [ -f ~/.bashrc.local ]; then
     source ~/.bashrc.local
 fi
+
+# Set tmux PWD
+export PS1=$PS1'$( [ -n $TMUX ] && tmux setenv -g TMUX_PWD_$(tmux display -p "#D" | tr -d %) $PWD)'

@@ -1,5 +1,5 @@
 {
-	"name": "Solarized Dark",
+	"name": "Solarized Mixed",
 	"groups": {
 		"user":               { "fg": "oldlace", "bg": "blue", "attr": ["bold"] },
 		"superuser":          { "fg": "oldlace", "bg": "red", "attr": ["bold"] },

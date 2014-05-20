@@ -1,0 +1,19 @@
+{
+	"name": "Solarized Light",
+	"groups": {
+		"user":               { "bg": "solarized.base2", "fg": "solarized.blue" },
+		"superuser":          { "fg": "solarized.base2", "bg": "solarized.red" },
+		"virtualenv":         { "fg": "solarized.base2", "bg": "solarized.green" },
+		"branch":             { "fg": "solarized.base01", "bg": "solarized.base2" },
+		"branch:divider":     { "fg": "solarized.yellow", "bg": "solarized.base2" },
+		"branch_dirty":       { "fg": "solarized.yellow", "bg": "solarized.base2" },
+		"branch_clean":       { "fg": "solarized.green", "bg": "solarized.base2" },
+		"cwd":                { "fg": "solarized.cyan", "bg": "solarized.base2" },
+		"cwd:current_folder": { "bg": "solarized.cyan", "fg": "solarized.base2" },
+		"cwd:divider":        { "fg": "solarized.cyan", "bg": "solarized.base2" },
+		"hostname":           { "fg": "solarized.base03", "bg": "solarized.orange" },
+		"exit_fail":          { "fg": "solarized.base2", "bg": "solarized.red" },
+		"exit_success":       { "fg": "solarized.base2", "bg": "solarized.green" },
+		"environment":        { "fg": "solarized.base03", "bg": "green" }
+	}
+}
