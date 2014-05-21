@@ -32,6 +32,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'
 "" syntastic syntax checker
 Plugin 'scrooloose/syntastic'
+"" NERDtree
+Plugin 'scrooloose/nerdtree'
 "" Tagbar shows you what function you're in
 Plugin 'majutsushi/tagbar'
 "" Make tmux the same theme bar as airline
