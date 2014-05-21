@@ -98,7 +98,7 @@ build_block() {
         if [ "$2" = "$4" ]; then
             echo $(tmux_color $5 $4 "nobold,nounderscore,noitalics")"" $(tmux_color $5 $4 $7)"$6 "
         else
-            echo $(tmux_color $4 $2 "nobold,nounderscore,noitalics")""$(tmux_color $5 $4 $7)"$6 "
+            echo $(tmux_color $4 $2 "nobold,nounderscore,noitalics")""$(tmux_color $5 $4 $7)" $6 "
         fi
     elif [ "$1" = "left" ]; then
         if [ "$3" = "$4" ]; then
@@ -113,25 +113,27 @@ setup_battery() {
     if which battery >/dev/null && battery >/dev/null; then
         BAT_LEV_C=$(battery Charging)
         BAT_LEV_D=$(battery Discharging)
-        BAT_SYM="🔋"
-        if [ -n "$BAT_LEV_C" ];
-            then BAT_LEV=$BAT_LEV_C; BAT_SYM="⚡";
-            else BAT_LEV=$BAT_LEV_D;
-        fi
-        if [ $BAT_LEV -gt 95 ]; then
-            BAT_SYM=" "
-            BATTERY_FG=$BATTERY_FULL_FG
-            BATTERY_BG=$BATTERY_FULL_BG
-        elif [ -n "$BATTERY_LEV_C" ]; then
+        if [ -n "$BAT_LEV_C" ]; then
+            BAT_LEV=$BAT_LEV_C; BAT_SYM="⚡";
             BATTERY_FG=$BATTERY_CHARGING_FG
             BATTERY_BG=$BATTERY_CHARGING_BG
-        elif [ $BAT_LEV -gt 20 ]; then
-            BATTERY_FG=$BATTERY_MED_FG
-            BATTERY_BG=$BATTERY_MED_BG
+        elif [ -n "$BAT_LEV_D" ]; then
+            BAT_LEV=$BAT_LEV_D; BAT_SYM="🔋";
+            if [ $BAT_LEV -gt 95 ]; then
+                BATTERY_FG=$BATTERY_FULL_FG
+                BATTERY_BG=$BATTERY_FULL_BG
+            elif [ $BAT_LEV -gt 20 ]; then
+                BATTERY_FG=$BATTERY_MED_FG
+                BATTERY_BG=$BATTERY_MED_BG
+            else
+                BAT_SYM="⚠"
+                BATTERY_FG=$BATTERY_LOW_FG
+                BATTERY_BG=$BATTERY_LOW_BG
+            fi
         else
-            BAT_SYM="⚠"
-            BATTERY_FG=$BATTERY_LOW_FG
-            BATTERY_BG=$BATTERY_LOW_BG
+            BAT_LEV=$(battery); BAT_SYM="⚡";
+            BATTERY_FG=$BATTERY_FULL_FG
+            BATTERY_BG=$BATTERY_FULL_BG
         fi
         BATTERY_MSG="${BAT_SYM} ${BAT_LEV}%"
         return 0
