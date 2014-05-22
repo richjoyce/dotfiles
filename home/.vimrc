@@ -17,13 +17,13 @@ Plugin 'greyblake/vim-preview'
 "" PEP8 checker
 Plugin 'nvie/vim-flake8'
 "" The best vim autocompleter
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 "" Add a git diff tracker in the gutter
 Plugin 'airblade/vim-gitgutter'
 "" Unbleed my eyes
 Plugin 'altercation/vim-colors-solarized'
 "" CMake builder-ma-bobber
-"Plugin 'vhdirk/vim-cmake'
+Plugin 'vhdirk/vim-cmake'
 "" CMake Project tree
 "Plugin 'Ignotus/vim-cmake-project'
 "" CMake project support
@@ -36,10 +36,14 @@ Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 "" Tagbar shows you what function you're in
 Plugin 'majutsushi/tagbar'
+"" Show me my indent plz
+Plugin 'nathanaelkane/vim-indent-guides'
 "" Make tmux the same theme bar as airline
 " This was nice to start off my tmux config,
 " but now I've customized it on top of it
 "Plugin 'edkolev/tmuxline.vim'
+"" Alternate to header and v-v
+Plugin 'a.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -78,6 +82,15 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 
+"" Replace tabs with spaces when encountering code from evil people
+" This is kinda like performing an exorcism
+command! ReplaceTabs %s/\t/    /eg
+" Forgive me father, for I have sinned.
+command! RemoveTrailing %s/\s\+$//e
+command! FixWhitespace exec "ReplaceTabs" | exec "RemoveTrailing" | noh
+set list
+set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
+
 "" Toggle tagbar
 noremap <leader>t :TagbarToggle<CR>
 
@@ -89,19 +102,23 @@ vnoremap < <gv
 vnoremap > >gv
 
 " resize a la tmux
-nnoremap h <C-w>-
-nnoremap l <C-w>+
-nnoremap j <C-w><
-nnoremap k <C-w>>
+nnoremap j <C-w>-
+nnoremap k <C-w>+
+nnoremap h <C-w><
+nnoremap l <C-w>>
 
 " move between tabs
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-nnoremap tt  :tabedit<Space>
-nnoremap tn  :tabnew<CR>:Ex<CR>
+nnoremap tj  :tabfirst<CR>
+nnoremap tl  :tabnext<CR>
+nnoremap tn  :tabnext<CR>
+nnoremap th  :tabprev<CR>
+nnoremap tp  :tabprev<CR>
+nnoremap tk  :tablast<CR>
+nnoremap te  :tabedit<Space>
+nnoremap tc  :tabnew<CR>:Ex<CR>
 nnoremap tm  :tabm<Space>
+nnoremap t>  :tabm +1<CR>
+nnoremap t<  :tabm -1<CR>
 nnoremap td  :tabclose<CR>
 
 "" Sign column color
@@ -113,8 +130,20 @@ set nu
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_enable_diagnostic_signs = 0
 
-""" CMake plugin options
-"let g:cmake_c_compiler = 'gcc'
-"let g:cmake_cxx_compiler = 'g++'
-"let g:cmake_build_dirs = [ "build" ]
-"let g:cmake_build_type = "Debug"
+"" CMake and make shortcuts
+nnoremap <leader>C :CMake<CR>
+nnoremap <leader>B :make<CR>
+nnoremap <leader>I :make install<CR>
+
+"" Open header file
+nnoremap <F2> :A<CR>
+nnoremap <leader><F2> :AV<CR>
+"" Open header under cursor
+nnoremap <F3> :IH<CR>
+nnoremap <leader><F3> :IHV<CR>
+
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=7
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=7
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
