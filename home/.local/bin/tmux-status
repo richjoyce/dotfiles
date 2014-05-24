@@ -17,21 +17,29 @@ STATUS_FG=${STATUS_FG:-base1}
 
 HOSTNAME_BG=${HOSTNAME_BG:-$STATUS_BG}
 HOSTNAME_FG=${HOSTNAME_FG:-orange}
+HOSTNAME_BG=base01
+HOSTNAME_FG=base3
 HOSTNAME_MSG=" #h"
 TIME_BG=${TIME_BG:-$STATUS_BG}
 TIME_FG=${TIME_FG:-magenta}
-TIME_MSG="⏲ `date +%H:%M`"
-DATE_BG=${DATE_BG:-$STATUS_BG}
-DATE_FG=${DATE_FG:-yellow}
+TIME_BG=base0
+TIME_FG=base3
+TIME_MSG="⏲ `date +%H%M`"
+TIME_ZULU_BG=${TIME_BG}
+TIME_ZULU_FG=${TIME_FG}
+TIME_ZULU_MSG="⏲ `date +%H%M`  `date -u +%d%H%MZ`"
+DATE_BG=${DATE_BG:-base0} #$STATUS_BG}
+DATE_FG=${DATE_FG:-base3}
 DATE_MSG="☀ `date +\"%b %e\"``day_suffix`"
-SESSION_BG=${SESSION_FG:-base1}
+SESSION_BG=${SESSION_BG:-base01}
 SESSION_FG=${SESSION_FG:-base3}
 SESSION_MSG="#S"
 
 WINDOW_BG=${WINDOW_BG:-$STATUS_BG}
 WINDOW_FG=${WINDOW_FG:-$STATUS_FG}
 CURR_WINDOW_BG=${CURR_WINDOW_BG:-blue}
-CURR_WINDOW_FG=${CURR_WINDOW_FG:-base2}
+CURR_WINDOW_FG=${CURR_WINDOW_FG:-base3}
+CURR_WINDOW_ATTR=${CURR_WINDOW_ATTR:-}
 
 BATTERY_FULL_BG=${BATTERY_FULL_BG:-$STATUS_BG}
 BATTERY_FULL_FG=${BATTERY_FULL_FG:-green}
@@ -42,10 +50,24 @@ BATTERY_MED_FG=${BATTERY_MED_FG:-yellow}
 BATTERY_LOW_BG=${BATTERY_LOW_BG:-red}
 BATTERY_LOW_FG=${BATTERY_LOW_FG:-$STATUS_BG}
 
+BATTERY_FULL_BG=base0
+BATTERY_FULL_FG=base3
+BATTERY_CHARGING_BG=base0
+BATTERY_CHARGING_FG=base3
+BATTERY_MED_BG=base0
+BATTERY_MED_FG=base3
+BATTERY_LOW_BG=red
+BATTERY_LOW_FG=base3
+
 GIT_DIRTY_BG=${GIT_DIRTY_BG:-$STATUS_BG}
 GIT_DIRTY_FG=${GIT_DIRTY_FG:-yellow}
 GIT_CLEAN_BG=${GIT_CLEAN_BG:-$STATUS_BG}
-GIT_CLEAN_FG=${GIT_CLEAN_FG:-green}
+GIT_CLEAN_FG=${GIT_CLEAN_FG:-base0}
+
+GIT_DIRTY_BG=yellow
+GIT_DIRTY_FG=base3
+GIT_CLEAN_BG=base0
+GIT_CLEAN_FG=base3
 
 WEATHER_BG=${WEATHER_BG:-$STATUS_BG}
 WEATHER_FG=${WEATHER_FG:-base0}
@@ -77,10 +99,11 @@ solar_to_tmux() {
 set_color() {
     FG="$1_FG"
     BG="$1_BG"
+    ATTR="$1_ATTR"
     if [ "$2" = "invert" ]; then
-        echo $(tmux_color ${!BG} ${!FG} $3)
+        echo $(tmux_color ${!BG} ${!FG} ${!ATTR})
     else
-        echo $(tmux_color ${!FG} ${!BG} $2)
+        echo $(tmux_color ${!FG} ${!BG} ${!ATTR})
     fi
 }
 
@@ -237,22 +260,22 @@ add_blocks_sub() {
 
 if [ "$1" = "right" ]; then
     if [ "$2" -gt "$MEDIUM_WIDTH" ]; then
-        add_blocks right BATTERY GIT_LONG HOSTNAME
+        add_blocks right GIT_LONG BATTERY HOSTNAME
     elif [ "$2" -gt "$SMALL_WIDTH" ]; then
-        add_blocks right BATTERY GIT_MEDIUM
+        add_blocks right GIT_MEDIUM BATTERY
     else
-        add_blocks right BATTERY GIT_SHORT
+        add_blocks right GIT_SHORT BATTERY
     fi
     echo ${STATUS}" "
 elif [ "$1" = "left" ]; then
     if [ "$2" -gt "$MEDIUM_WIDTH" ]; then
-        add_blocks left DATE TIME
+        add_blocks left SESSION DATE TIME_ZULU
     else
-        add_blocks left TIME
+        add_blocks left TIME SESSION
     fi
     echo ${STATUS}
 elif [ "$1" = "window" ]; then
     echo $(set_color WINDOW "nobold,nounderscore,noitalics")" #I  #W "
 elif [ "$1" = "window-current" ]; then
-    echo $(set_color CURR_WINDOW "nobold,nounderscore,noitalics")""$(set_color CURR_WINDOW)" #I  #W "$(set_color CURR_WINDOW invert)""
+    echo $(tmux_color $WINDOW_BG $CURR_WINDOW_BG "nobold,nounderscore,noitalics")""$(set_color CURR_WINDOW)" #I  #W "$(tmux_color $CURR_WINDOW_BG $WINDOW_BG)""
 fi
