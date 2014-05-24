@@ -1,0 +1,11 @@
+#!/bin/bash
+
+tmux-pane-pwd ()
+{
+    tmux showenv -g TMUX_PWD_$(tmux display -p "#D" | tr -d %) | sed "s/^.*=//"
+}
+tmux-rename-to-pwd ()
+{
+    tmux rename-window "$(basename $(tmux-pane-pwd))"
+}
+tmux-rename-to-pwd

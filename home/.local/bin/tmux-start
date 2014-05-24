@@ -1,0 +1,47 @@
+#!/bin/sh
+SESSION=$USER
+
+# abort if we're already inside a TMUX session
+[ "$TMUX" == "" ] || exit 0
+
+# startup a "default" session if none currently exists
+tmux has-session -t ${SESSION} || tmux new-session -s ${SESSION} -d
+
+# if default is not attached, and is only session, just attach to it
+if [ "$(tmux list-sessions | wc -l)" == "1" ] && ( tmux list-sessions -F "#S #{session_attached}" | grep -e"\<${SESSION}\>" | grep 0 > /dev/null ) ; then
+    tmux attach -t ${SESSION}
+else
+    # present menu for user to choose which workspace to open
+    PS3="Please choose your session: "
+    # split on new lines
+    set f
+    IFS='
+'
+    options=($(tmux list-sessions -F "#S #{?session_attached,(attached),}") "New Session" "bash")
+    unset IFS
+    set +f
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "New Session")
+                read -p "Enter new session name: " SESSION_NAME
+                if [ "${SESSION_NAME}" = "" ]; then
+                    tmux new
+                else
+                    tmux new -s "$SESSION_NAME"
+                fi
+                break
+                ;;
+            "bash")
+                bash --login
+                break;;
+            "")
+                tmux new
+                break;;
+            *)
+                tmux attach-session -t ${opt% (attached)}
+                break
+                ;;
+        esac
+    done
+fi

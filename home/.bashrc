@@ -61,16 +61,6 @@ fi
 export PROMPT_COMMAND=$PROMPT_COMMAND'$( [ -n $TMUX ] && tmux setenv -g TMUX_PWD_$(tmux display -p "#D" | tr -d %) $PWD)'
 #export PROMPT_COMMAND=$PROMPT_COMMAND'$( [ -n $TMUX ] && tmux refresh-client -S)'
 
-# tmux get pane pwd
-tmux-pane-pwd ()
-{
-    tmux showenv -g TMUX_PWD_$(tmux display -p "#D" | tr -d %) | sed "s/^.*=//"
-}
-tmux-rename-to-pwd ()
-{
-    tmux rename-window "$(basename $(tmux_pane_pwd))"
-}
-
 # upto parent dir
 upto ()
 {
