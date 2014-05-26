@@ -33,6 +33,7 @@ DATE_FG=${DATE_FG:-base3}
 DATE_MSG="☀ `date +\"%b %e\"``day_suffix`"
 SESSION_BG=${SESSION_BG:-base01}
 SESSION_FG=${SESSION_FG:-base3}
+SESSION_ATTR=${SESSION_ATTR:-bold}
 SESSION_MSG="#S"
 
 WINDOW_BG=${WINDOW_BG:-$STATUS_BG}
@@ -246,12 +247,13 @@ add_blocks_sub() {
         # set up colors
         FG="$1_FG"
         BG="$1_BG"
+        ATTR="$1_ATTR"
         MSG="$1_MSG"
         # find the next bg
         if [ -n "$2" ]; then NEXT_BG_NAME="$2_BG"; else NEXT_BG_NAME="STATUS_BG"; fi
         NEXT_BG=${!NEXT_BG_NAME}
         # add to the status
-        STATUS=${STATUS}$(build_block $SIDE $PREV_BG $NEXT_BG ${!BG} ${!FG} "${!MSG}")
+        STATUS=${STATUS}$(build_block $SIDE $PREV_BG $NEXT_BG ${!BG} ${!FG} "${!MSG}" "${!ATTR}")
         # set the prev bg
         PREV_BG=${!BG}
     done
@@ -269,9 +271,9 @@ if [ "$1" = "right" ]; then
     echo ${STATUS}" "
 elif [ "$1" = "left" ]; then
     if [ "$2" -gt "$MEDIUM_WIDTH" ]; then
-        add_blocks left SESSION DATE TIME_ZULU
+        add_blocks left SESSION DATE TIME
     else
-        add_blocks left TIME SESSION
+        add_blocks left SESSION TIME
     fi
     echo ${STATUS}
 elif [ "$1" = "window" ]; then

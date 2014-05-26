@@ -30,6 +30,8 @@ Plugin 'vhdirk/vim-cmake'
 "Plugin 'jalcine/cmake.vim'
 "" airline status bar
 Plugin 'bling/vim-airline'
+"" put ycm errors in airline
+Plugin 'asenac/vim-airline-loclist'
 "" syntastic syntax checker
 Plugin 'scrooloose/syntastic'
 "" NERDtree
@@ -56,6 +58,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme = 'solarized2'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#loclist#enabled = 1
 set noshowmode
 
 "" Highlight extra whitespace as RED
@@ -129,6 +132,7 @@ set nu
 "" YouCompleteMe config
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_always_populate_location_list = 1
 
 "" CMake and make shortcuts
 nnoremap <leader>C :CMake<CR>
