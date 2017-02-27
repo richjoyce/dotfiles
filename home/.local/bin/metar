@@ -1,3 +1,0 @@
-#!/bin/sh
-
-curl -s http://weather.noaa.gov/pub/data/observations/metar/stations/${1^^}.TXT | tail -1
