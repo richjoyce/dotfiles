@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SKEL_DIR=${CURRENT_DIR}/home
 
 ### DIRCOLORS!
 
 # prompt to delete .dir_colors
-if [ -f ~/..dir_colors ]; then
-  rm -i ~/..dir_colors
+if [ -f ~/.dir_colors ]; then
+  rm -i ~/.dir_colors
 fi
+
 # link ..dir_colors
-if ! [ -f ~/..dir_colors ]; then
-  ln $(CURRENT_DIR)/..dir_colors ~/..dir_colors
+if ! [ -f ~/.dir_colors ]; then
+  ln ${SKEL_DIR}/.dir_colors ~/.dir_colors
 fi
 
 ### ZSH!
@@ -18,7 +20,7 @@ fi
 if [ -d ~/.oh-my-zsh ]; then
   sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
   rm -f ~/.zshrc
-  ln $(CURRENT_DIR)/.zshrc ~/.zshrc
+  ln ${SKEL_DIR}/.zshrc ~/.zshrc
 else
   # prompt to delete zshrc
   if [ -f ~/.zshrc ]; then
@@ -26,7 +28,7 @@ else
   fi
   # link .zshrc
   if ! [ -f ~/.zshrc ]; then
-    ln $(CURRENT_DIR)/.zshrc ~/.zshrc
+    ln ${SKEL_DIR}/.zshrc ~/.zshrc
   fi
 fi
 
@@ -55,7 +57,7 @@ if [ -f ~/.tmux.conf ]; then
 fi
 # link .tmux.conf
 if ! [ -f ~/.tmux.conf ]; then
-  ln $(CURRENT_DIR)/.tmux.conf ~/.tmux.conf
+  ln ${SKEL_DIR}/.tmux.conf ~/.tmux.conf
 fi
 
 ### VIM!
