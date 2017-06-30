@@ -17,7 +17,7 @@ fi
 
 ### ZSH!
 
-if [ -d ~/.oh-my-zsh ]; then
+if ! [ -d ~/.oh-my-zsh ]; then
   sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
   rm -f ~/.zshrc
   ln ${SKEL_DIR}/.zshrc ~/.zshrc
@@ -33,12 +33,12 @@ else
 fi
 
 # install zsh plugins
-if ! [ -d ~/.zshrc/custom/plugins/zsh-syntax-highlighting ]; then
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zshrc/custom/plugins/zsh-syntax-highlighting
+if ! [ -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
 
-if ! [ -d ~/.zshrc/custom/themes/powerline-shell ]; then
-  git clone https://github.com/richjoyce/powerline-shell ~/.zshrc/custom/themes/powerline-shell
+if ! [ -d ~/.oh-my-zsh/custom/themes/powerline-shell ]; then
+  git clone https://github.com/richjoyce/powerline-shell ~/.oh-my-zsh/custom/themes/powerline-shell
 fi
 ln -s ${SKEL_DIR}/.oh-my-zsh/custom/themes/powerline-shell/config.py ~/.oh-my-zsh/custom/themes/powerline-shell/config.py
 (cd ~/.oh-my-zsh/custom/themes/powerline-shell/ && python install.py)
