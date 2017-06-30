@@ -40,6 +40,8 @@ fi
 if ! [ -d ~/.zshrc/custom/themes/powerline-shell ]; then
   git clone https://github.com/richjoyce/powerline-shell ~/.zshrc/custom/themes/powerline-shell
 fi
+ln -s ${SKEL_DIR}/.oh-my-zsh/custom/themes/powerline-shell/config.py ~/.oh-my-zsh/custom/themes/powerline-shell/config.py
+(cd ~/.oh-my-zsh/custom/themes/powerline-shell/ && python install.py)
 
 ### TMUX!
 
