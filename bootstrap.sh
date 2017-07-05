@@ -3,36 +3,75 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SKEL_DIR=${CURRENT_DIR}/home
 
-### DIRCOLORS!
+DEFAULT_NO=1
+MAKE_BACKUPS=0
 
-# prompt to delete .dir_colors
-if [ -f ~/.dir_colors ]; then
-  rm -i ~/.dir_colors
-fi
+install_package() {
+  echo "Installing: $package"
+  echo "Requesting sudo access for apt"
+  sudo apt install -y $1
+}
 
-# link ..dir_colors
-if ! [ -f ~/.dir_colors ]; then
-  ln ${SKEL_DIR}/.dir_colors ~/.dir_colors
-fi
+prompt_confirm_Yn() {
+  if [ $DEFAULT_NO -ge 1 ]; then
+    prompt="$1 [y/N] "
+  else
+    prompt="$1 [Y/n] "
+  fi
+  read -r -p "$prompt" response
+  case "$response" in
+    [nN][oO]|[nN]) 
+      return 1
+      ;;
+    [yY][eE][sS]|[yY]) 
+      return 0
+      ;;
+    *) 
+      return $DEFAULT_NO
+      ;;
+  esac
+}
+
+# remove_and_link NAME
+remove_and_link() {
+  if ! [ -f "${SKEL_DIR}/${1}" ]; then
+    echo "Uh-oh, ${1} not found in repo? Skipping..."
+    return
+  fi
+  prompt="Install $1 ?"
+  if [ -f "${HOME}/${1}" ]; then
+    prompt="Remove and install $1 ?"
+  fi
+  if prompt_confirm_Yn "$prompt"; then
+    if [ -f "${HOME}/${1}" ]; then
+      rm -f "${HOME}/${1}"
+    fi
+    ln -sf "${SKEL_DIR}/${1}" "${HOME}/${1}"
+  else
+    echo "Skipping $1 ..."
+  fi
+}
+
 
 ### ZSH!
-
-if ! [ -d ~/.oh-my-zsh ]; then
-  sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-  rm -f ~/.zshrc
-  ln ${SKEL_DIR}/.zshrc ~/.zshrc
-else
-  # prompt to delete zshrc
-  if [ -f ~/.zshrc ]; then
-    rm -i ~/.zshrc
-  fi
-  # link .zshrc
-  if ! [ -f ~/.zshrc ]; then
-    ln ${SKEL_DIR}/.zshrc ~/.zshrc
-  fi
+CHECK_ZSH_INSTALLED=$(grep /zsh$ /etc/shells | wc -l)
+if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
+  install_package zsh
 fi
 
+if ! [ -d ~/.oh-my-zsh ] && prompt_confirm_Yn "Install oh-my-zsh?"; then
+  read -r -p "Note: oh-my-zsh starts a new shell, you need to exit it after its done to complete." response
+  sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+fi
+
+remove_and_link .zshrc
+
+### DIRCOLORS!
+remove_and_link .dir_colors
+
+
 # install zsh plugins
+echo "Installing zsh plugins..."
 if ! [ -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
@@ -40,12 +79,14 @@ fi
 if ! [ -d ~/.oh-my-zsh/custom/themes/powerline-shell ]; then
   git clone https://github.com/richjoyce/powerline-shell ~/.oh-my-zsh/custom/themes/powerline-shell
 fi
-ln -s ${SKEL_DIR}/.oh-my-zsh/custom/themes/powerline-shell/config.py ~/.oh-my-zsh/custom/themes/powerline-shell/config.py
+
+remove_and_link .oh-my-zsh/custom/themes/powerline-shell/config.py
 (cd ~/.oh-my-zsh/custom/themes/powerline-shell/ && python install.py)
 
 ### TMUX!
 
 # install tmux plugins
+echo "Installing tmux plugins..."
 if ! [ -d ~/.tmux/plugins/tmux-battery ]; then
   git clone https://github.com/richjoyce/tmux-battery ~/.tmux/plugins/tmux-battery
 fi
@@ -54,13 +95,8 @@ if ! [ -d ~/.tmux/plugins/tmux-prefix-highlight ]; then
 fi
 
 # prompt to delete tmux.conf
-if [ -f ~/.tmux.conf ]; then
-  rm -i ~/.tmux.conf
-fi
-# link .tmux.conf
-if ! [ -f ~/.tmux.conf ]; then
-  ln ${SKEL_DIR}/.tmux.conf ~/.tmux.conf
-fi
+remove_and_link .tmux.conf
 
 ### VIM!
-# TODO
+#echo "Installing vimrc..."
+remove_and_link .vimrc
