@@ -1,3 +1,5 @@
+#zmodload zsh/zprof
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,6 +10,7 @@ export ZSH=/home/rjoyce/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerline-shell/powerline-shell"
+#ZSH_THEME="candy"
 
 DEFAULT_USER=rjoyce
 
@@ -56,6 +59,7 @@ ENABLE_CORRECTION="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(colorize git lol nyan tmux vi-mode zsh-syntax-highlighting)
+#plugins=(colorize git vi-mode zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -93,7 +97,7 @@ export EDITOR=vim
 export WINHOME=/mnt/c/Users/richj
 export DISPLAY=localhost:0
 # anaconda
-export PATH=/home/rjoyce/anaconda3/bin:$PATH
+export PATH=${HOME}/anaconda3/bin:${PATH}
 
 alias ls='ls -F --color=auto'
 alias la='ls -AF'
@@ -106,6 +110,8 @@ alias sd='source deactivate'
 
 alias gap='git add --patch'
 alias gdlc='git diff HEAD^ HEAD'
+alias gll='git --no-pager log --pretty=oneline --decorate=short -n 5'
+alias gco='git checkout'
 
 # Set up dircolors/LS_COLORS
 eval "$(dircolors -b ~/.dir_colors)"
@@ -113,3 +119,27 @@ eval "$(dircolors -b ~/.dir_colors)"
 # colored completion - use my LS_COLORS
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
+export SSH_AUTH_SOCK=${HOME}/.gnupg/S.gpg-agent.ssh
+gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye > /dev/null
+alias gpg-updatetty='gpg-connect-agent updatestartuptty /bye > /dev/null'
+
+export PATH="${HOME}/.local/bin:$PATH"
+
+
+wopen() {
+    # Copy to tmp dir so windows can see it
+    mkdir -p /mnt/c/tmp
+    rm -f /mnt/c/tmp/$(basename $1)
+    cp $1 /mnt/c/tmp/
+    if [ $? -eq 0 ]; then
+        (cd /mnt/c/tmp && cmd.exe /C start $(basename $1))
+    else
+        echo "File wasnt copied properly! Not opening. (Close all programs using file?)"
+    fi
+}
+
+# added by travis gem
+[ -f /home/rjoyce/.travis/travis.sh ] && source /home/rjoyce/.travis/travis.sh
+
+#zprof

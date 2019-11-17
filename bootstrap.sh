@@ -12,7 +12,7 @@ install_package() {
   sudo apt install -y $1
 }
 
-prompt_confirm_Yn() {
+prompt_confirm() {
   if [ $DEFAULT_NO -ge 1 ]; then
     prompt="$1 [y/N] "
   else
@@ -42,7 +42,7 @@ remove_and_link() {
   if [ -f "${HOME}/${1}" ]; then
     prompt="Remove and install $1 ?"
   fi
-  if prompt_confirm_Yn "$prompt"; then
+  if prompt_confirm "$prompt"; then
     if [ -f "${HOME}/${1}" ]; then
       rm -f "${HOME}/${1}"
     fi
@@ -59,7 +59,7 @@ if [ ! $CHECK_ZSH_INSTALLED -ge 1 ]; then
   install_package zsh
 fi
 
-if ! [ -d ~/.oh-my-zsh ] && prompt_confirm_Yn "Install oh-my-zsh?"; then
+if ! [ -d ~/.oh-my-zsh ] && prompt_confirm "Install oh-my-zsh?"; then
   read -r -p "Note: oh-my-zsh starts a new shell, you need to exit it after its done to complete." response
   sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 fi
@@ -99,4 +99,12 @@ remove_and_link .tmux.conf
 
 ### VIM!
 #echo "Installing vimrc..."
+if ! [ -d ~/.vim/bundle/Vundle.vim ] && prompt_confirm "Install Vundle?"; then
+    if [ -d ~/.vim ]; then
+        mv ~/.vim ~/.vim.old
+    fi
+    mkdir -p ~/.vim/bundle/
+    git clone https://github.com/VundleVim/Vundle.vim ~/.vim/bundle/Vundle.vim
+fi
+
 remove_and_link .vimrc
